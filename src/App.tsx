@@ -1,8 +1,18 @@
-export function App() {
+import { ChakraProvider, Box, Flex } from '@chakra-ui/react'
+import { BasicTable } from './components/table'
+import { Header } from './components/header'
 
+export function App() {
   return (
-    <>
-      <h1>Hello, World!</h1>
-    </>
+    <ChakraProvider>
+       <Box>
+        <Header/>
+       </Box>
+      <Box>
+      <Flex justifyContent="center" alignItems="center" height="100vh">
+      <BasicTable/>
+      </Flex>
+      </Box>
+    </ChakraProvider>
   )
 }
