@@ -1,7 +1,11 @@
 import { Table, Tbody, Tr, Th, Td, TableContainer, Thead } from '@chakra-ui/react';
+import { ActionsRoom } from './menuRoom';
+import { MdCheck, MdOutlineClose } from "react-icons/md";
 
 export function BasicTable() {
-  const tableMinWidth = '62.5rem';
+  const tableMinWidth = '80rem';
+  const checkColor = 'green'
+  const closeColor = 'red'
 
   return (
     <TableContainer>
@@ -20,29 +24,45 @@ export function BasicTable() {
             <Td align='center'>206</Td>
             <Td align='center'>2</Td>
             <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
+            <Td align='center'>
+              <MdCheck color={checkColor}/>
+            </Td>
+            <Td align='center'>
+              <ActionsRoom />
+            </Td>
           </Tr>
           <Tr>
             <Td align='center'>206</Td>
             <Td align='center'>2</Td>
             <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
+            <Td align='center'>
+              <MdCheck color={checkColor}/>
+            </Td>
+            <Td align='center'>
+              <ActionsRoom />
+            </Td>
           </Tr>
           <Tr>
             <Td align='center'>206</Td>
             <Td align='center'>2</Td>
             <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
+            <Td align='center'> 
+              <MdOutlineClose color={closeColor}/>
+            </Td>
+            <Td align='center'>
+              <ActionsRoom />
+            </Td>
           </Tr>
           <Tr>
             <Td align='center'>206</Td>
             <Td align='center'>2</Td>
             <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
-            <Td align='center'>25.4</Td>
+            <Td align='center'>
+            <MdOutlineClose color={closeColor}/>
+            </Td>
+            <Td align='center'>
+              <ActionsRoom />
+            </Td>
           </Tr>
         </Tbody>
 
