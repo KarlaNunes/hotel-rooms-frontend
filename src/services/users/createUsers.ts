@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { User } from '../../@types/User'
 
-const baseURL = ''
+const baseURL = 'http://localhost:3000'
 
 export async function createUser(user: User): Promise<User> {
     try {
