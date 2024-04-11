@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { User } from '../../../@types/User';
+import { User } from '../../@types/User';
 
 export async function getUserById(baseUrl: string, id: number): Promise<User> {
     try {
