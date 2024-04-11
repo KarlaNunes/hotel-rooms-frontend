@@ -1,7 +1,7 @@
 export interface CreditCard {
     id?: number;
-    number: number;
-    dueDate: Date;
-    owner: number;
+    number: string;
+    due_date: string;
+    owner?: number;
     cvv: string;
 }

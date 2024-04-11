@@ -1,6 +1,7 @@
 import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button } from '@chakra-ui/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { createUser } from '../services/users/createUsers';
+import { createCreditCard } from '../services/credit-card/createCreditCard';
 
 const black = '#646464'
 const gold = '#bf8b5a'
@@ -9,7 +10,10 @@ export function FormBooking() {
   const [formData, setFormData] = useState({
     name: '',
     social_security_card: '',
-    contact: ''
+    contact: '',
+    number: '',
+    due_date: '',
+    cvv: ''
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,13 +25,20 @@ export function FormBooking() {
     e.preventDefault();
     try {
       const { name, social_security_card, contact } = formData;
-      console.log("get in")
-      console.log(`name: ${name}, social_security_card: ${social_security_card}, contact: ${contact}`)
-      await createUser({ name, social_security_card, contact });
-      console.log('Usuário criado com sucesso');
-      setFormData({ name: '', social_security_card: '', contact: '' });
+      const newUser = await createUser({ name, social_security_card, contact });
+
+      const creditCardData = {
+        owner: newUser.id,
+        number: formData.number,
+        due_date: formData.due_date,
+        cvv: formData.cvv
+      };
+
+      await createCreditCard(creditCardData);
+
+      setFormData({ name: '', social_security_card: '', contact: '', number: '', due_date: '', cvv: '' });
     } catch (error) {
-      console.error('Erro ao criar o usuário:', error);
+      console.error('Erro ao criar o usuário ou o cartão de crédito:', error);
     }
   };
 
@@ -60,16 +71,16 @@ export function FormBooking() {
           
           <Box mr={14} w="33.33%">
             <FormLabel color={black}>Card number:</FormLabel>
-            <Input placeholder="Enter card number" />
+            <Input name='number' value={formData.number} onChange={handleInputChange} placeholder="Enter card number" />
           </Box>
           
           <Box mr={14} w="33.33%"> 
             <FormLabel color={black}>Card due date:</FormLabel>
-            <Input type="date" />
+            <Input name='due_date' value={formData.due_date} onChange={handleInputChange} type="date" />
           </Box>
           <Box w="33.33%">
             <FormLabel color={black}>CVV:</FormLabel>
-            <Input placeholder="Enter CVV" />
+            <Input name='cvv' value={formData.cvv} onChange={handleInputChange} placeholder="Enter CVV" />
           </Box>
         </Flex>
       </FormControl>
