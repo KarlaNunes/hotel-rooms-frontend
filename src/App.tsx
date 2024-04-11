@@ -1,6 +1,5 @@
-// App.tsx
-import { useState } from 'react';
 import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
+import { useAppState } from './functions/stateFunctions';
 import { TableRoom } from './components/tableRoom';
 import { TableBooking } from './components/tableBooking';
 import { Header } from './components/header';
@@ -10,35 +9,8 @@ import { AddButton } from './components/createButton';
 import { FormRoom } from './components/formRoom';
 import { FormBooking } from './components/formBooking';
 
-type ScreenType = 'rooms' | 'bookings';
-
 export function App() {
-    const [screenType, setScreenType] = useState<ScreenType>('rooms');
-    const [showForm, setShowForm] = useState(false);
-    const [pageTitle, setPageTitle] = useState('Rooms');
-
-    const handleSwitchToRooms = () => {
-        setShowForm(false);
-        setScreenType('rooms');
-        setPageTitle('Rooms');
-    };
-
-    const handleSwitchToBookings = () => {
-        setShowForm(false);
-        setScreenType('bookings');
-        setPageTitle('Bookings');
-    };
-
-    const handleShowForm = (type: ScreenType) => {
-        setShowForm(true);
-        setScreenType(type);
-        setPageTitle(type === 'rooms' ? 'Create Room' : 'Book Room');
-    };
-
-    const handleEditForm = () => {
-        setShowForm(true);
-        setPageTitle(screenType === 'rooms' ? 'Edit Room' : 'Edit Booking');
-    };
+    const { screenType, showForm, pageTitle, handleSwitchToRooms, handleSwitchToBookings, handleShowForm, handleEditForm } = useAppState();
 
     return (
         <ChakraProvider>
