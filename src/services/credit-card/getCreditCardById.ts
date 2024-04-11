@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { Booking } from '../../@types/Booking';
+import { CreditCard } from '../../@types/CreditCard';
 
-export async function getBookingById(baseURL: string, id: number): Promise<Booking> {
+export async function getCreditCardById(baseURL: string, id: number): Promise<CreditCard> {
   try {
-    const response: AxiosResponse<Booking> = await axios.get(
+    const response: AxiosResponse<CreditCard> = await axios.get(
       `${baseURL}/bookings/${id}`
     );
     return response.data;

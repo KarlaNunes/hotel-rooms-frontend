@@ -2,8 +2,8 @@ import { User } from "./User";
 
 export interface CreditCard {
     id?: number;
-    number: string;
-    due_date: Date;
-    owner: User;
+    number: number;
+    dueDate: Date;
+    owner: number;
     cvv: string;
 }
