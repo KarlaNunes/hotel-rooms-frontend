@@ -4,7 +4,7 @@ import { MdCheck, MdOutlineClose } from "react-icons/md";
 
 interface TableRoomProps {
   onEditClick: () => void;
-  onBookRoomClick: () => void; // Adicionando nova prop
+  onBookRoomClick: () => void;
 }
 
 export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {

@@ -5,7 +5,7 @@ import { Menu, MenuList, MenuItem, IconButton, MenuButton } from '@chakra-ui/rea
 
 interface ActionsRoomProps {
     onEditClick: () => void;
-    onBookRoomClick: () => void; // Adicionando nova prop
+    onBookRoomClick: () => void;
 }
 
 export function ActionsRoom({ onEditClick, onBookRoomClick }: ActionsRoomProps) {
