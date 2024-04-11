@@ -1,4 +1,5 @@
-import{ useState } from 'react';
+// App.tsx
+import { useState } from 'react';
 import { ChakraProvider, Box, Flex } from '@chakra-ui/react';
 import { TableRoom } from './components/tableRoom';
 import { TableBooking } from './components/tableBooking';
@@ -12,51 +13,54 @@ import { FormBooking } from './components/formBooking';
 type ScreenType = 'rooms' | 'bookings';
 
 export function App() {
-  const [screenType, setScreenType] = useState<ScreenType>('rooms');
-  const [showForm, setShowForm] = useState(false);
-  const [pageTitle, setPageTitle] = useState('Rooms');
+    const [screenType, setScreenType] = useState<ScreenType>('rooms');
+    const [showForm, setShowForm] = useState(false);
+    const [pageTitle, setPageTitle] = useState('Rooms');
 
-  const handleSwitchToRooms = () => {
-    setShowForm(false);
-    setScreenType('rooms');
-    setPageTitle('Rooms');
-  };
+    const handleSwitchToRooms = () => {
+        setShowForm(false);
+        setScreenType('rooms');
+        setPageTitle('Rooms');
+    };
 
-  const handleSwitchToBookings = () => {
-    setShowForm(false);
-    setScreenType('bookings');
-    setPageTitle('Bookings');
-  };
+    const handleSwitchToBookings = () => {
+        setShowForm(false);
+        setScreenType('bookings');
+        setPageTitle('Bookings');
+    };
 
-  const handleShowForm = (type: ScreenType) => {
-    setShowForm(true);
-    setScreenType(type);
-    setPageTitle(type === 'rooms' ? 'Create Room' : 'Book Room');
-  };
+    const handleShowForm = (type: ScreenType) => {
+        setShowForm(true);
+        setScreenType(type);
+        setPageTitle(type === 'rooms' ? 'Create Room' : 'Book Room');
+    };
 
-  return (
-    <ChakraProvider>
-      <Box>
-        <Header onSwitchToBookings={handleSwitchToBookings} onSwitchToRooms={handleSwitchToRooms} />
-      </Box>
+    const handleEditForm = () => {
+        setShowForm(true);
+        setPageTitle(screenType === 'rooms' ? 'Edit Room' : 'Edit Booking');
+    };
 
-      <Flex flexDirection={'column'} alignItems={'center'}>
-        <Flex flexDirection={'column'} alignItems={'start'} justifyContent={'center'} marginTop={100} gap={10}>
-          <Box>
-            <Title text={pageTitle} />
-          </Box>
-          <Flex justifyContent={'space-between'} width={'100%'}>
-            {!showForm && <Search />}
-            {!showForm && (
-              <AddButton text={`New ${screenType === 'rooms' ? 'Room' : 'Booking'}`} onClick={() => handleShowForm(screenType)} />
-            )}
-          </Flex>
+    return (
+        <ChakraProvider>
+            <Box>
+                <Header onSwitchToBookings={handleSwitchToBookings} onSwitchToRooms={handleSwitchToRooms} />
+            </Box>
 
-          <Box>
-            {showForm ? (screenType === 'rooms' ? <FormRoom /> : <FormBooking />) : (screenType === 'rooms' ? <TableRoom /> : <TableBooking />)}
-          </Box>
-        </Flex>
-      </Flex>
-    </ChakraProvider>
-  );
+            <Flex flexDirection={'column'} alignItems={'center'}>
+                <Flex flexDirection={'column'} alignItems={'start'} justifyContent={'center'} marginTop={100} gap={10}>
+                    <Box>
+                        <Title text={pageTitle} />
+                    </Box>
+                    <Flex justifyContent={'space-between'} width={'100%'}>
+                        {!showForm && <Search />}
+                        {!showForm && screenType === 'rooms' && <AddButton text="New Room" onClick={() => handleShowForm('rooms')} />}
+                        {!showForm && screenType === 'bookings' && <AddButton text="New Booking" onClick={() => handleShowForm('bookings')} />}
+                    </Flex>
+                    <Box>
+                        {showForm ? (screenType === 'rooms' ? <FormRoom /> : <FormBooking />) : (screenType === 'rooms' ? <TableRoom onEditClick={handleEditForm} /> : <TableBooking onEditClick={handleEditForm} />)}
+                    </Box>
+                </Flex>
+            </Flex>
+        </ChakraProvider>
+    );
 }
