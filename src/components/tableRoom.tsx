@@ -2,7 +2,7 @@ import { Table, Tbody, Tr, Th, Td, TableContainer, Thead } from '@chakra-ui/reac
 import { ActionsRoom } from './menuRoom';
 import { MdCheck, MdOutlineClose } from "react-icons/md";
 
-export function BasicTable() {
+export function TableRoom() {
   const tableMinWidth = '80rem';
   const checkColor = 'green'
   const closeColor = 'red'
