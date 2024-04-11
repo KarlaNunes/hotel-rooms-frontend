@@ -32,7 +32,7 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
   }, []);
 
   return (
-    <TableContainer border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'}>
+    <TableContainer border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} mb={20}>
       <Table variant='simple' size='lg' minWidth={tableMinWidth}>
         <Thead>
           <Tr>
