@@ -5,7 +5,7 @@ const gold = '#bf8b5a'
 
 export function FormBooking() {
   return (
-    <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10}> 
+    <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10} mb={20}> 
       <FormControl>
         <Flex>
           <Box mr={14} w="50%"> 
