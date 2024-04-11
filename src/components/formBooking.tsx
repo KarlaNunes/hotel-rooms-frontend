@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, Select, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button } from '@chakra-ui/react';
+import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button } from '@chakra-ui/react';
 
 const black = '#646464'
 const gold = '#bf8b5a'
@@ -21,19 +21,30 @@ export function FormBooking() {
 
       <FormControl mt={10}>
         <Flex>
-          <Box mr={14} w="33.33%"> 
-            <FormLabel color={black}>Room number:</FormLabel>
-            <Select placeholder="Select room number">
-              
-            </Select>
-          </Box>
+          
           <Box mr={14} w="33.33%">
-            <FormLabel color={black}>Payment method:</FormLabel>
-            <Select placeholder="Select payment method">
-              
-            </Select>
+            <FormLabel color={black}>Card number:</FormLabel>
+            <Input placeholder="Enter card number" />
+          </Box>
+          <Box mr={14} w="33.33%"> 
+            <FormLabel color={black}>Card due date:</FormLabel>
+            <Input type="date" />
           </Box>
           <Box w="33.33%">
+            <FormLabel color={black}>CVV:</FormLabel>
+            <Input placeholder="Enter CVV" />
+          </Box>
+        </Flex>
+      </FormControl>
+
+      <FormControl mt={10}>
+        <Flex>
+        <Box mr={14} w="50%"> 
+            <FormLabel color={black}>Room number:</FormLabel>
+            <Input placeholder="Enter room number" />
+          </Box>
+  
+          <Box w="50%">
             <FormLabel color={black}>Price:</FormLabel>
             <NumberInput defaultValue={0} min={0} w="100%">
               <NumberInputField />
