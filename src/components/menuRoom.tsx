@@ -1,16 +1,20 @@
-// menuRoom.tsx
 import { MdMoreHoriz, MdOutlineEdit, MdDeleteOutline, MdOutlineBed } from "react-icons/md";
 import { Menu, MenuList, MenuItem, IconButton, MenuButton } from '@chakra-ui/react';
 
 interface ActionsRoomProps {
     onEditClick: () => void;
+    onBookRoomClick: () => void; // Adicionando nova prop
 }
 
-export function ActionsRoom({ onEditClick }: ActionsRoomProps) {
+export function ActionsRoom({ onEditClick, onBookRoomClick }: ActionsRoomProps) {
     const iconSize = 16;
 
     const handleEditClick = () => {
         onEditClick();
+    };
+
+    const handleBookRoomClick = () => {
+        onBookRoomClick();
     };
 
     return (
@@ -24,8 +28,8 @@ export function ActionsRoom({ onEditClick }: ActionsRoomProps) {
                 <MenuItem icon={<MdOutlineEdit size={iconSize} />} onClick={handleEditClick}>
                     Edit
                 </MenuItem>
-                <MenuItem color={'#bf8b5a'} icon={<MdOutlineBed size={iconSize} color={'#bf8b5a'}/>} >
-                Book Room
+                <MenuItem color={'#bf8b5a'} icon={<MdOutlineBed size={iconSize} color={'#bf8b5a'} />} onClick={handleBookRoomClick}>
+                    Book Room
                 </MenuItem>
                 <MenuItem color={'red'} icon={<MdDeleteOutline size={iconSize} color={'red'} />} >
                     Delete
