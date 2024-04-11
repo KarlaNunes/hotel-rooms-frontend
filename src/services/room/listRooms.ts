@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Room } from '../../@types/Room';
 
+
 export async function listRooms(baseURL: string): Promise<Room[]> {
   try {
     const response: AxiosResponse<Room[]> = await axios.get(

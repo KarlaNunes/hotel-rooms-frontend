@@ -1,8 +1,7 @@
 export interface Room {
     id?: number;
     available : boolean;
-    numberOfBeds: number;
+    n_of_bathrooms: number;
     numeration: number;
-    numberOfBathrooms: number;
+    n_of_beds: number;
 }
-  

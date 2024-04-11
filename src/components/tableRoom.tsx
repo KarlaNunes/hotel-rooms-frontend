@@ -1,6 +1,9 @@
+import  { useEffect, useState } from 'react';
 import { Table, Tbody, Tr, Th, Td, TableContainer, Thead } from '@chakra-ui/react';
-import { ActionsRoom } from './menuRoom';
 import { MdCheck, MdOutlineClose } from "react-icons/md";
+import { ActionsRoom } from './menuRoom';
+import { listRooms } from '../services/room/listRooms';
+import { Room } from '../@types/Room';
 
 interface TableRoomProps {
   onEditClick: () => void;
@@ -8,9 +11,23 @@ interface TableRoomProps {
 }
 
 export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
-  const tableMinWidth = '80rem'
-  const checkColor = 'green'
-  const closeColor = 'red'
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const tableMinWidth = '80rem';
+  const checkColor = 'green';
+  const closeColor = 'red';
+
+  useEffect(() => {
+    async function fetchRooms() {
+      try {
+        const roomsData = await listRooms('http://localhost:3000');
+        setRooms(roomsData);
+      } catch (error) {
+        console.error('Failed to fetch rooms:', error);
+      }
+    }
+
+    fetchRooms();
+  }, []);
 
   return (
     <TableContainer border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'}>
@@ -25,24 +42,19 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td align='center'>206</Td>
-            <Td align='center'>2</Td>
-            <Td align='center'>25.4</Td>
-            <Td align='center'> <MdCheck color={checkColor}/></Td>
-            <Td align='center'>
-              <ActionsRoom onEditClick={onEditClick} onBookRoomClick={onBookRoomClick} />
-            </Td>
-          </Tr>
-          <Tr>
-            <Td align='center'>206</Td>
-            <Td align='center'>2</Td>
-            <Td align='center'>25.4</Td>
-            <Td align='center'> <MdOutlineClose color={closeColor}/></Td>
-            <Td align='center'>
-              <ActionsRoom onEditClick={onEditClick} onBookRoomClick={onBookRoomClick} />
-            </Td>
-          </Tr>
+          {rooms.map((room) => (
+            <Tr key={room.id}>
+              <Td align='center'>{room.numeration}</Td>
+              <Td align='center'>{room.n_of_beds}</Td>
+              <Td align='center'>{room.n_of_bathrooms}</Td>
+              <Td align='center'>
+                {room.available ? <MdCheck color={checkColor} /> : <MdOutlineClose color={closeColor} />}
+              </Td>
+              <Td align='center'>
+                <ActionsRoom onEditClick={onEditClick} onBookRoomClick={onBookRoomClick} />
+              </Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

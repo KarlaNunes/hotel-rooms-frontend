@@ -7,7 +7,7 @@ export async function createRoom(room: Room): Promise<Room> {
   try {
     const response: AxiosResponse<Room> = await axios.post(
       `${baseURL}/rooms`,
-      room
+      {...room, available: true}
     );
     return response.data;
   } catch (error: unknown) {
