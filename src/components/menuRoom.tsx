@@ -1,6 +1,8 @@
 import { MdMoreHoriz, MdOutlineEdit, MdDeleteOutline, MdOutlineBed } from "react-icons/md";
 import { Menu, MenuList, MenuItem, IconButton, MenuButton } from '@chakra-ui/react';
 
+
+
 interface ActionsRoomProps {
     onEditClick: () => void;
     onBookRoomClick: () => void; // Adicionando nova prop
