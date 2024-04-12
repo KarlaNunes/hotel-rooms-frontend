@@ -9,7 +9,7 @@ export function ActionsBooking() {
         <Menu>
             <MenuButton as={IconButton} icon={<MdMoreHoriz />} background={"transparent"} />
             <MenuList>
-                <MenuItem color={'green'} icon={<MdOutlinePayments size={iconSize} color={'green'} />} >
+                <MenuItem onClick={() => alert("Payment confirmed!")} color={'green'} icon={<MdOutlinePayments size={iconSize} color={'green'} />} >
                     Confirmar Pagamento
                 </MenuItem>
                 <MenuItem color={'red'} icon={<MdDeleteOutline size={iconSize} color={'red'} />} >
