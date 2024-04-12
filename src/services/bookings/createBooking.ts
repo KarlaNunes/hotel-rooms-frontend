@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Booking } from '../../@types/Booking';
 
-const baseURL = '';
+const baseURL = 'http://localhost:3000';
 
 export async function createBooking(booking: Booking): Promise<Booking> {
   try {

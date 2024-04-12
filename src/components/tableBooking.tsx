@@ -15,10 +15,12 @@ export function TableBooking({ onEditClick }: TableBookingProps) {
     const tableMinWidth = '80rem';
     const [bookings, setBookings] = useState<Booking[] | null>(null);
     
+    
     useEffect(() => {
         async function fetchBookings() {
           try {
             const bookingsData = await listBookings();
+            
             const bookingsWithRoomDetails = await Promise.all(
                 bookingsData.map(async (booking) => {
                     const room = await getRoomById(booking.room!);
