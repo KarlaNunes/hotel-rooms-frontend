@@ -56,17 +56,16 @@ export function App() {
           </Flex>
           <Box>
             {showForm ? (
-              console.log(selectedRoom),
               screenType === "rooms" ? (
                 <FormRoom roomId={selectedRoom} />
 
               ) : (
-                <FormBooking />
+                <FormBooking roomId={selectedRoom} />
               )
             ) : screenType === "rooms" ? (
               <TableRoom
                 onEditClick={(roomId: number) => handleEditForm(roomId)}
-                onBookRoomClick={() => handleShowForm("bookings")}
+                onBookRoomClick={(roomId?: number) => handleShowForm("bookings", roomId)}
               />
 
             ) : (

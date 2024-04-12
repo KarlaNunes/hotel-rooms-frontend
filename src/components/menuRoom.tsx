@@ -2,7 +2,7 @@ import { MdMoreHoriz, MdOutlineEdit, MdDeleteOutline, MdOutlineBed } from "react
 import { Menu, MenuList, MenuItem, IconButton, MenuButton } from '@chakra-ui/react';
 interface ActionsRoomProps {
     onEditClick: (roomId: number) => void;
-    onBookRoomClick: () => void;
+    onBookRoomClick: (roomId?: number) => void;
     onDeleteRoomClick: (roomId: number) => void;
     roomId?: number;
 }
@@ -17,7 +17,7 @@ export function ActionsRoom({ onEditClick, onBookRoomClick, onDeleteRoomClick, r
     };
 
     const handleBookRoomClick = () => {
-        onBookRoomClick();
+        onBookRoomClick(roomId);
     };
 
     const handleDeleteRoomClick = () => {
