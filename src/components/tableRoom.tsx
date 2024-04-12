@@ -8,7 +8,7 @@ import { deleteRoom } from '../services/room/deleteRoom';
 
 interface TableRoomProps {
   onEditClick: (roomId: number) => void;
-  onBookRoomClick: () => void;
+  onBookRoomClick: (roomId?: number) => void;
 }
 
 export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
@@ -29,7 +29,7 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
   useEffect(() => {
     async function fetchRooms() {
       try {
-        const roomsData = await listRooms('http://localhost:3000');
+        const roomsData = await listRooms();
         setRooms(roomsData);
       } catch (error) {
         console.error('Failed to fetch rooms:', error);
@@ -64,7 +64,7 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
               <Td align='center'>
                 <ActionsRoom
                   onEditClick={(roomId: number) => onEditClick(roomId)}
-                  onBookRoomClick={onBookRoomClick}
+                  onBookRoomClick={(roomId?: number) => onBookRoomClick(roomId)}
                   onDeleteRoomClick={handleDeleteRoom}
                   roomId={room.id}
                 />

@@ -32,7 +32,6 @@ export function useAppState() {
     setPageTitle(screenType === "rooms" ? "Edit Room" : "Edit Booking");
     setSelectedRoom(roomId);
   };
-  
 
   return {
     screenType,

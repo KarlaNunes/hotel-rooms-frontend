@@ -1,13 +1,19 @@
 import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button } from '@chakra-ui/react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { createUser } from '../services/users/createUsers';
 import { createCreditCard } from '../services/credit-card/createCreditCard';
 import { createBooking } from '../services/bookings/createBooking';
+import { Room } from '../@types/Room';
+import { getRoomById } from '../services/room/getRoomById';
 
 const black = '#646464'
 const gold = '#bf8b5a'
 
-export function FormBooking() {
+export interface FormBookingProps {
+  roomId?: number;
+}
+
+export function FormBooking({ roomId }: FormBookingProps) {
   const [formData, setFormData] = useState({
     name: '',
     social_security_card: '',
@@ -24,6 +30,8 @@ export function FormBooking() {
   const [checkOutDate, setCheckOutDate] = useState('');
   const [checkInTime, setCheckInTime] = useState('');
   const [checkOutTime, setCheckOutTime] = useState('');
+  const [roomData, setRoomData] = useState<Room>({} as Room);
+
 
   const handleCheckInDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCheckInDate(e.target.value);
@@ -69,15 +77,11 @@ export function FormBooking() {
         user_id: newUser.id,
         from_date: checkInDateTime,
         until_date: checkOutDateTime,
-        room: 5,
+        room: roomData.id,
         price: formData.price
       };
       
-      console.log("bookingData: ", bookingData)
-
       await createBooking(bookingData);
-
-      console.log('criou booking data')
 
       setFormData({ name: '', social_security_card: '', contact: '', number: '', from_date: '', due_date: '', cvv: '', room: 0, price: 0 });
     } catch (error) {
@@ -88,6 +92,20 @@ export function FormBooking() {
   const handlePriceChange = (value: number | string) => {
     setFormData({ ...formData, price: Number(value) });
   };
+
+
+  useEffect(() => {
+    const getRoomData = async (id: number) => {
+      try {
+        const room = await getRoomById(id);
+        setRoomData(room);
+      } catch (error) {
+        console.error(`Failed to fetch room data: ${error}`);
+      }
+    };
+
+    getRoomData(roomId ?? 1);
+  }, []);
 
   return (
     <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10} mb={20}> 
@@ -135,7 +153,7 @@ export function FormBooking() {
         <Flex>
         <Box mr={14} w="50%"> 
             <FormLabel color={black}>Room number:</FormLabel>
-            <Input name='contact' value={formData.room} readOnly type='tel' placeholder="Enter client contact" />
+            <Input name='contact' value={roomData.numeration} readOnly type='tel' placeholder="Enter client contact" />
         </Box>
   
           <Box w="50%">
