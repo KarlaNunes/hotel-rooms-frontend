@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Tbody, Tr, Th, Td, TableContainer, Thead } from '@chakra-ui/react';
 import { MdCheck, MdOutlineClose } from "react-icons/md";
 import { ActionsRoom } from './menuRoom';
@@ -11,7 +11,7 @@ interface TableRoomProps {
 }
 
 export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<Room[] | null>(null);
   const tableMinWidth = '80rem';
   const checkColor = 'green';
   const closeColor = 'red';
@@ -23,8 +23,10 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
         setRooms(roomsData);
       } catch (error) {
         console.error('Failed to fetch rooms:', error);
+        setRooms([]);
       }
     }
+    
 
     fetchRooms();
   }, []);
@@ -42,7 +44,7 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {rooms.map((room) => (
+          {rooms !== null && rooms.length > 0 && rooms.map((room) => (
             <Tr key={room.id}>
               <Td align='center'>{room.numeration}</Td>
               <Td align='center'>{room.n_of_beds}</Td>
