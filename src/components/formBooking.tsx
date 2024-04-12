@@ -90,7 +90,7 @@ export function FormBooking() {
   };
 
   return (
-    <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10}> 
+    <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10} mb={20}> 
 
     <form onSubmit={handleSubmit}>
       <FormControl>

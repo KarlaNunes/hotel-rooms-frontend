@@ -18,4 +18,3 @@ export async function updateRoom(room: Room): Promise<Room> {
     }
   }
 }
-  

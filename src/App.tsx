@@ -4,7 +4,6 @@ import { TableRoom } from "./components/tableRoom";
 import { TableBooking } from "./components/tableBooking";
 import { Header } from "./components/header";
 import { Title } from "./components/title";
-import { Search } from "./components/search";
 import { AddButton } from "./components/createButton";
 import { FormRoom } from "./components/formRoom";
 import { FormBooking } from "./components/formBooking";
@@ -18,6 +17,7 @@ export function App() {
     handleSwitchToBookings,
     handleShowForm,
     handleEditForm,
+    selectedRoom,
   } = useAppState();
 
   return (
@@ -37,11 +37,10 @@ export function App() {
           marginTop={100}
           gap={10}
         >
+          <Flex justifyContent={"space-between"} width={"100%"}>
           <Box>
             <Title text={pageTitle} />
           </Box>
-          <Flex justifyContent={"space-between"} width={"100%"}>
-            {!showForm && <Search />}
             {!showForm && screenType === "rooms" && (
               <AddButton
                 text="New Room"
@@ -57,16 +56,19 @@ export function App() {
           </Flex>
           <Box>
             {showForm ? (
+              console.log(selectedRoom),
               screenType === "rooms" ? (
-                <FormRoom />
+                <FormRoom roomId={selectedRoom} />
+
               ) : (
                 <FormBooking />
               )
             ) : screenType === "rooms" ? (
               <TableRoom
-                onEditClick={handleEditForm}
+                onEditClick={(roomId: number) => handleEditForm(roomId)}
                 onBookRoomClick={() => handleShowForm("bookings")}
               />
+
             ) : (
               <TableBooking onEditClick={handleEditForm} />
             )}

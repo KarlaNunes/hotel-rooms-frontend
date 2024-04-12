@@ -6,8 +6,7 @@ const baseURL = 'http://localhost:3000';
 export async function createRoom(room: Room): Promise<Room> {
   try {
     const response: AxiosResponse<Room> = await axios.post(
-      `${baseURL}/rooms`,
-      {...room, available: true}
+      `${baseURL}/rooms`, room
     );
     return response.data;
   } catch (error: unknown) {
@@ -17,4 +16,4 @@ export async function createRoom(room: Room): Promise<Room> {
       throw new Error(`Failed to create room: ${String(error)}`);
     }
   }
-}
+} 
