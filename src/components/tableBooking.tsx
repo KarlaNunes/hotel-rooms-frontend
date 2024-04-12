@@ -4,6 +4,8 @@ import { ActionsBooking } from './menuBooking';
 import { useEffect, useState } from 'react';
 import { listBookings } from '../services/bookings/listBookings';
 import { Booking } from '../@types/Booking';
+import { getRoomById } from '../services/room/getRoomById';
+import { getUserById } from '../services/users/getUserbyId';
 
 interface TableBookingProps {
     onEditClick: () => void;
@@ -17,7 +19,14 @@ export function TableBooking({ onEditClick }: TableBookingProps) {
         async function fetchBookings() {
           try {
             const bookingsData = await listBookings();
-            setBookings(bookingsData);
+            const bookingsWithRoomDetails = await Promise.all(
+                bookingsData.map(async (booking) => {
+                    const room = await getRoomById(booking.room!);
+                    const user = await getUserById(booking.user_id!)
+                    return { ...booking, roomNumber: room.numeration, clientName: user.name, clientContact: user.contact};
+                })
+            );
+            setBookings(bookingsWithRoomDetails);
           } catch (error) {
             console.error('Failed to fetch bookings:', error);
             setBookings([]);
@@ -25,7 +34,7 @@ export function TableBooking({ onEditClick }: TableBookingProps) {
         }
     
         fetchBookings();
-      }, []);
+    }, []);
 
     return (
         <TableContainer border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} mb={20}>
@@ -44,13 +53,12 @@ export function TableBooking({ onEditClick }: TableBookingProps) {
                 <Tbody>
                 {bookings !== null && bookings.length > 0 && bookings.map((booking) => (
                     <Tr key={booking.id}>
-                        <Td align='center'>{booking.room}</Td>
+                        <Td align='center'>{booking.roomNumber}</Td>
                         <Td align='center'>{booking.from_date}</Td>
                         <Td align='center'>{booking.until_date}</Td>
                         <Td align='center'>{booking.price}</Td>
-                        <Td align='center'>{booking.user_id}</Td>
-                        <Td align='center'>Lorelai Gilmore</Td>
-                        <Td align='center'>84999999</Td>
+                        <Td align='center'>{booking.clientName}</Td>
+                        <Td align='center'>{booking.clientContact}</Td>
                         <Td align='center'>
                             <ActionsBooking onEditClick={onEditClick} formType="booking" />
                         </Td>
