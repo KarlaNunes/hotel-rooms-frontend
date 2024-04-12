@@ -5,4 +5,7 @@ export interface Booking {
     price: number;
     room?: number;
     user_id?: number;
+    roomNumber?: number;
+    clientName?: string;
+    clientContact?: string;
 }
