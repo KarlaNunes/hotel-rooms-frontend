@@ -1,18 +1,20 @@
 import { MdMoreHoriz, MdOutlineEdit, MdDeleteOutline, MdOutlineBed } from "react-icons/md";
 import { Menu, MenuList, MenuItem, IconButton, MenuButton } from '@chakra-ui/react';
 
-
-
 interface ActionsRoomProps {
-    onEditClick: () => void;
+    onEditClick: (roomId: number) => void;
     onBookRoomClick: () => void;
+    roomId?: number;
 }
 
-export function ActionsRoom({ onEditClick, onBookRoomClick }: ActionsRoomProps) {
+export function ActionsRoom({onEditClick, onBookRoomClick, roomId }: ActionsRoomProps) {
     const iconSize = 16;
 
     const handleEditClick = () => {
-        onEditClick();
+        if (roomId !== undefined) { 
+            onEditClick(roomId); 
+            console.log(roomId);
+        }
     };
 
     const handleBookRoomClick = () => {

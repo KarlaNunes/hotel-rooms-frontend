@@ -18,6 +18,7 @@ export function App() {
     handleSwitchToBookings,
     handleShowForm,
     handleEditForm,
+    selectedRoom,
   } = useAppState();
 
   return (
@@ -57,16 +58,19 @@ export function App() {
           </Flex>
           <Box>
             {showForm ? (
+              console.log(selectedRoom),
               screenType === "rooms" ? (
-                <FormRoom />
+                <FormRoom roomId={selectedRoom} />
+
               ) : (
                 <FormBooking />
               )
             ) : screenType === "rooms" ? (
               <TableRoom
-                onEditClick={handleEditForm}
+                onEditClick={(roomId: number) => handleEditForm(roomId)}
                 onBookRoomClick={() => handleShowForm("bookings")}
               />
+
             ) : (
               <TableBooking onEditClick={handleEditForm} />
             )}

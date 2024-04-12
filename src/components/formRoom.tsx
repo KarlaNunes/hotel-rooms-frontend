@@ -1,12 +1,18 @@
 import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button, Select } from '@chakra-ui/react';
+import { updateRoom } from '../services/room/updateRoom';
 import { createRoom } from '../services/room/createRoom';
+import { getRoomById } from '../services/room/getRoomById';
 import { Room } from '../@types/Room';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const black = '#646464';
 const gold = '#bf8b5a';
 
-export function FormRoom() {
+export interface FormRoomProps {
+  roomId?: number;
+}
+
+export function FormRoom({ roomId }: FormRoomProps) {
   const initialRoomData: Room = {
     available: true,
     n_of_bathrooms: 0,
@@ -16,17 +22,36 @@ export function FormRoom() {
 
   const [roomData, setRoomData] = useState<Room>(initialRoomData);
 
-  const handleSaveRoom = async () => {
+  useEffect(() => {
+    if (roomId) {
+      getRoomData(roomId);
+    }
+  }, [roomId]);
+
+  const getRoomData = async (id: number) => {
     try {
-      await createRoom(roomData);
-      setRoomData(initialRoomData);
-      alert('Room created successfully!');
+      const room = await getRoomById(id);
+      setRoomData(room);
     } catch (error) {
-      alert(`Failed to create room: ${error}`);
+      console.error(`Failed to fetch room data: ${error}`);
     }
   };
 
-  const handleInputChange = (name: string, value: string | number | boolean) => {
+  const handleSaveRoom = async () => {
+    try {
+      if (roomId) {
+        await updateRoom(roomData);
+      } else {
+        await createRoom(roomData);
+        setRoomData(initialRoomData);
+      }
+      alert('Room saved successfully!');
+    } catch (error) {
+      alert(`Failed to save room: ${error}`);
+    }
+  };
+
+  const handleInputChange = (name: keyof Room, value: string | number | boolean) => {
     setRoomData(prevState => ({
       ...prevState,
       [name]: value
@@ -37,11 +62,11 @@ export function FormRoom() {
     <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10}> 
       <FormControl>
         <Flex>
-          <Box mr={14} w="33.33%"> 
+          <Box mr={14} w="50%"> 
             <FormLabel color={black}>Room Number:</FormLabel>
             <Input type="text" name="numeration" value={roomData.numeration} onChange={e => handleInputChange('numeration', e.target.value)} placeholder="Enter room number" />
           </Box>
-          <Box mr={14} w="33.33%"> 
+          <Box mr={14} w="50%"> 
             <FormLabel color={black}>Beds:</FormLabel>
             <NumberInput min={0} value={roomData.n_of_beds} onChange={(_valueString, valueNumber) => handleInputChange('n_of_beds', valueNumber)}>
               <NumberInputField />
@@ -51,7 +76,16 @@ export function FormRoom() {
               </NumberInputStepper>
             </NumberInput>
           </Box>
-          <Box mr={14} w="33.33%"> 
+        </Flex>
+        <Flex mt={10}>
+          <Box mr={14} w="50%" >
+            <FormLabel color={black}>Available:</FormLabel>
+            <Select name="available" value={roomData.available ? 'yes' : 'no'} onChange={e => handleInputChange('available', e.target.value === 'yes' ? true : false)}>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </Select>
+          </Box>
+          <Box mr={14} w="50%"> 
             <FormLabel color={black}>Bathrooms:</FormLabel>
             <NumberInput min={0} value={roomData.n_of_bathrooms} onChange={(_valueString, valueNumber) => handleInputChange('n_of_bathrooms', valueNumber)}>
               <NumberInputField />
@@ -60,15 +94,6 @@ export function FormRoom() {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-          </Box>
-        </Flex>
-        <Flex>
-          <Box w="100%">
-            <FormLabel color={black}>Available:</FormLabel>
-            <Select name="available" value={roomData.available ? 'yes' : 'no'} onChange={e => handleInputChange('available', e.target.value === 'yes' ? true : false)}>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </Select>
           </Box>
         </Flex>
       </FormControl>

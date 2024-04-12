@@ -6,7 +6,7 @@ import { listRooms } from '../services/room/listRooms';
 import { Room } from '../@types/Room';
 
 interface TableRoomProps {
-  onEditClick: () => void;
+  onEditClick: (roomId: number) => void;
   onBookRoomClick: () => void;
 }
 
@@ -26,7 +26,6 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
         setRooms([]);
       }
     }
-    
 
     fetchRooms();
   }, []);
@@ -53,7 +52,11 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
                 {room.available ? <MdCheck color={checkColor} /> : <MdOutlineClose color={closeColor} />}
               </Td>
               <Td align='center'>
-                <ActionsRoom onEditClick={onEditClick} onBookRoomClick={onBookRoomClick} />
+              <ActionsRoom
+                onEditClick={(roomId: number) => onEditClick(roomId)}
+                onBookRoomClick={onBookRoomClick}
+                roomId={room.id}
+              />
               </Td>
             </Tr>
           ))}
