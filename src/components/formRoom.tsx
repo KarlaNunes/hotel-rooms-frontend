@@ -78,13 +78,6 @@ export function FormRoom({ roomId }: FormRoomProps) {
           </Box>
         </Flex>
         <Flex mt={10}>
-          <Box mr={14} w="50%" >
-            <FormLabel color={black}>Available:</FormLabel>
-            <Select name="available" value={roomData.available ? 'yes' : 'no'} onChange={e => handleInputChange('available', e.target.value === 'yes' ? true : false)}>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </Select>
-          </Box>
           <Box mr={14} w="50%"> 
             <FormLabel color={black}>Bathrooms:</FormLabel>
             <NumberInput min={0} value={roomData.n_of_bathrooms} onChange={(_valueString, valueNumber) => handleInputChange('n_of_bathrooms', valueNumber)}>
@@ -94,6 +87,13 @@ export function FormRoom({ roomId }: FormRoomProps) {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
+          </Box>
+          <Box mr={14} w="50%" >
+            <FormLabel color={black}>Available:</FormLabel>
+            <Select name="available" value={roomData.available ? 'yes' : 'no'} onChange={e => handleInputChange('available', e.target.value === 'yes' ? true : false)}>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </Select>
           </Box>
         </Flex>
       </FormControl>

@@ -4,6 +4,7 @@ import { MdCheck, MdOutlineClose } from "react-icons/md";
 import { ActionsRoom } from './menuRoom';
 import { listRooms } from '../services/room/listRooms';
 import { Room } from '../@types/Room';
+import { deleteRoom } from '../services/room/deleteRoom';
 
 interface TableRoomProps {
   onEditClick: (roomId: number) => void;
@@ -15,6 +16,15 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
   const tableMinWidth = '80rem';
   const checkColor = 'green';
   const closeColor = 'red';
+
+  const handleDeleteRoom = async (roomId: number) => {
+    try {
+      await deleteRoom(roomId);
+      window.location.reload();
+    } catch (error) {
+      console.error(`Failed to delete room: ${error}`);
+    }
+  };
 
   useEffect(() => {
     async function fetchRooms() {
@@ -52,11 +62,12 @@ export function TableRoom({ onEditClick, onBookRoomClick }: TableRoomProps) {
                 {room.available ? <MdCheck color={checkColor} /> : <MdOutlineClose color={closeColor} />}
               </Td>
               <Td align='center'>
-              <ActionsRoom
-                onEditClick={(roomId: number) => onEditClick(roomId)}
-                onBookRoomClick={onBookRoomClick}
-                roomId={room.id}
-              />
+                <ActionsRoom
+                  onEditClick={(roomId: number) => onEditClick(roomId)}
+                  onBookRoomClick={onBookRoomClick}
+                  onDeleteRoomClick={handleDeleteRoom}
+                  roomId={room.id}
+                />
               </Td>
             </Tr>
           ))}
