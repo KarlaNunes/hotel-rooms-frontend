@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { Room } from '../../@types/Room';
 
-export async function getRoomById(baseURL: string, id: number): Promise<Room> {
+const baseURL = 'http://localhost:3000';
+
+export async function getRoomById(id: number): Promise<Room> {
   try {
     const response: AxiosResponse<Room> = await axios.get(
       `${baseURL}/rooms/${id}`

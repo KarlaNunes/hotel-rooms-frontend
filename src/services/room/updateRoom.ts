@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { Room } from '../../@types/Room';
 
-export async function updateRoom(baseURL: string, room: Room): Promise<Room> {
+const baseURL = 'http://localhost:3000';
+
+export async function updateRoom(room: Room): Promise<Room> {
   try {
     const response: AxiosResponse<Room> = await axios.put(
       `${baseURL}/rooms/${room.id}`,

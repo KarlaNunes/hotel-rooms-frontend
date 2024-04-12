@@ -1,7 +1,10 @@
-import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button } from '@chakra-ui/react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button, Select } from '@chakra-ui/react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { createUser } from '../services/users/createUsers';
 import { createCreditCard } from '../services/credit-card/createCreditCard';
+import { createBooking } from '../services/bookings/createBooking';
+import { listRooms } from '../services/room/listRooms';
+import { Room } from '../@types/Room';
 
 const black = '#646464'
 const gold = '#bf8b5a'
@@ -12,9 +15,34 @@ export function FormBooking() {
     social_security_card: '',
     contact: '',
     number: '',
+    from_date: '',
     due_date: '',
-    cvv: ''
+    cvv: '',
+    room: '',
+    price: 0
   });
+
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [checkInTime, setCheckInTime] = useState('');
+  const [checkOutTime, setCheckOutTime] = useState('');
+
+  const handleCheckInDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckInDate(e.target.value);
+  };
+
+  const handleCheckOutDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckOutDate(e.target.value);
+  };
+  
+  const handleCheckInTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckInTime(e.target.value);
+  };
+
+  const handleCheckOutTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckOutTime(e.target.value);
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,16 +59,55 @@ export function FormBooking() {
         owner: newUser.id,
         number: formData.number,
         due_date: formData.due_date,
-        cvv: formData.cvv
+        cvv: formData.cvv,
       };
 
       await createCreditCard(creditCardData);
 
-      setFormData({ name: '', social_security_card: '', contact: '', number: '', due_date: '', cvv: '' });
+      const checkInDateTime = new Date(`${checkInDate}T${checkInTime}`).toISOString();
+      const checkOutDateTime = new Date(`${checkOutDate}T${checkOutTime}`).toISOString();
+
+      const selectedRoom = rooms.find(room => room.numeration === Number(formData.room));
+      if (!selectedRoom) {
+        throw new Error('Quarto selecionado não encontrado.');
+      }
+
+      const bookingData = {
+        user_id: newUser.id,
+        from_date: checkInDateTime,
+        until_date: checkOutDateTime,
+        room: selectedRoom.id,
+        price: formData.price
+      };
+
+      await createBooking(bookingData);
+
+      setFormData({ name: '', social_security_card: '', contact: '', number: '', from_date: '', due_date: '', cvv: '', room: '', price: 0 });
     } catch (error) {
       console.error('Erro ao criar o usuário ou o cartão de crédito:', error);
     }
   };
+
+  const handleRoomSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, room: e.target.value });
+  };
+
+  const handlePriceChange = (value: number | string) => {
+    setFormData({ ...formData, price: Number(value) });
+  };
+
+  useEffect(() => {
+    async function fetchRooms() {
+      try {
+        const roomList = await listRooms();
+        setRooms(roomList);
+      } catch (error) {
+        console.error('Erro ao obter a lista de quartos:', error);
+      }
+    }
+
+    fetchRooms();
+  }, []);
 
 
   return (
@@ -88,13 +155,18 @@ export function FormBooking() {
       <FormControl mt={10}>
         <Flex>
         <Box mr={14} w="50%"> 
-            <FormLabel color={black}>Room number:</FormLabel>
-            <Input placeholder="Enter room number" />
-          </Box>
+          <FormLabel color={black}>Room number:</FormLabel>
+            <Select name="selectedRoom" value={formData.room} onChange={handleRoomSelect}>
+              <option value="">Select a room</option>
+              {rooms.map(room => (
+                <option key={room.id} value={room.id}>{room.numeration}</option>
+              ))}
+            </Select>
+        </Box>
   
           <Box w="50%">
             <FormLabel color={black}>Price:</FormLabel>
-            <NumberInput defaultValue={0} min={0} w="100%">
+            <NumberInput defaultValue={0} min={0} w="100%" onChange={handlePriceChange}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -109,11 +181,11 @@ export function FormBooking() {
         <Flex>
           <Box mr={14} w="50%"> 
             <FormLabel color={black}>Check-in date:</FormLabel>
-            <Input type="date" />
+            <Input onChange={handleCheckInDateChange} type="date" />
           </Box>
           <Box w="50%">
             <FormLabel color={black}>Check-in time:</FormLabel>
-            <Input type="time" />
+            <Input onChange={handleCheckInTimeChange} type="time" />
           </Box>
         </Flex>
       </FormControl>
@@ -122,11 +194,11 @@ export function FormBooking() {
         <Flex>
           <Box mr={14} w="50%"> 
             <FormLabel color={black}>Check-out date:</FormLabel>
-            <Input type="date" />
+            <Input onChange={handleCheckOutDateChange} type="date" />
           </Box>
           <Box w="50%">
             <FormLabel color={black}>Check-out time:</FormLabel>
-            <Input type="time" />
+            <Input onChange={handleCheckOutTimeChange} type="time" />
           </Box>
         </Flex>
       </FormControl>
