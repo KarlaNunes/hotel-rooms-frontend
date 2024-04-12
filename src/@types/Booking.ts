@@ -1,9 +1,9 @@
 export interface Booking {
     id?: number;
-    fromDate: Date;
-    untilDate: Date;
+    from_date: Date;
+    until_date: Date;
     price: number;
-    roomId: number;
-    paymentId: number;
-    userId: number;
+    room: number;
+    payment_id: number;
+    user_id: number;
 }
