@@ -47,12 +47,7 @@ export function App() {
                 onClick={() => handleShowForm("rooms")}
               />
             )}
-            {!showForm && screenType === "bookings" && (
-              <AddButton
-                text="New Booking"
-                onClick={() => handleShowForm("bookings")}
-              />
-            )}
+
           </Flex>
           <Box>
             {showForm ? (
