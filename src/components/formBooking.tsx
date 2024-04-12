@@ -1,10 +1,8 @@
-import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button, Select } from '@chakra-ui/react';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { FormControl, FormLabel, Input, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Flex, Box, Button } from '@chakra-ui/react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { createUser } from '../services/users/createUsers';
 import { createCreditCard } from '../services/credit-card/createCreditCard';
 import { createBooking } from '../services/bookings/createBooking';
-import { listRooms } from '../services/room/listRooms';
-import { Room } from '../@types/Room';
 
 const black = '#646464'
 const gold = '#bf8b5a'
@@ -18,11 +16,10 @@ export function FormBooking() {
     from_date: '',
     due_date: '',
     cvv: '',
-    room: '',
+    room: 0,
     price: 0
   });
 
-  const [rooms, setRooms] = useState<Room[]>([]);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [checkInTime, setCheckInTime] = useState('');
@@ -67,48 +64,30 @@ export function FormBooking() {
       const checkInDateTime = new Date(`${checkInDate}T${checkInTime}`).toISOString();
       const checkOutDateTime = new Date(`${checkOutDate}T${checkOutTime}`).toISOString();
 
-      const selectedRoom = rooms.find(room => room.numeration === Number(formData.room));
-      if (!selectedRoom) {
-        throw new Error('Quarto selecionado não encontrado.');
-      }
-
+      
       const bookingData = {
         user_id: newUser.id,
         from_date: checkInDateTime,
         until_date: checkOutDateTime,
-        room: selectedRoom.id,
+        room: 5,
         price: formData.price
       };
+      
+      console.log("bookingData: ", bookingData)
 
       await createBooking(bookingData);
 
-      setFormData({ name: '', social_security_card: '', contact: '', number: '', from_date: '', due_date: '', cvv: '', room: '', price: 0 });
+      console.log('criou booking data')
+
+      setFormData({ name: '', social_security_card: '', contact: '', number: '', from_date: '', due_date: '', cvv: '', room: 0, price: 0 });
     } catch (error) {
       console.error('Erro ao criar o usuário ou o cartão de crédito:', error);
     }
   };
 
-  const handleRoomSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, room: e.target.value });
-  };
-
   const handlePriceChange = (value: number | string) => {
     setFormData({ ...formData, price: Number(value) });
   };
-
-  useEffect(() => {
-    async function fetchRooms() {
-      try {
-        const roomList = await listRooms();
-        setRooms(roomList);
-      } catch (error) {
-        console.error('Erro ao obter a lista de quartos:', error);
-      }
-    }
-
-    fetchRooms();
-  }, []);
-
 
   return (
     <Box w="65rem" border={'1px solid'} borderRadius={10} borderColor={'#E2E8F0'} p={10}> 
@@ -155,13 +134,8 @@ export function FormBooking() {
       <FormControl mt={10}>
         <Flex>
         <Box mr={14} w="50%"> 
-          <FormLabel color={black}>Room number:</FormLabel>
-            <Select name="selectedRoom" value={formData.room} onChange={handleRoomSelect}>
-              <option value="">Select a room</option>
-              {rooms.map(room => (
-                <option key={room.id} value={room.id}>{room.numeration}</option>
-              ))}
-            </Select>
+            <FormLabel color={black}>Room number:</FormLabel>
+            <Input name='contact' value={formData.room} readOnly type='tel' placeholder="Enter client contact" />
         </Box>
   
           <Box w="50%">
