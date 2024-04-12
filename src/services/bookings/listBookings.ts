@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { Booking } from '../../@types/Booking';
 
-export async function listBookings(baseURL: string): Promise<Booking[]> {
+const baseURL = 'http://localhost:3000';
+
+export async function listBookings(): Promise<Booking[]> {
   try {
     const response: AxiosResponse<Booking[]> = await axios.get(
       `${baseURL}/bookings`

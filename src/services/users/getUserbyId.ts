@@ -1,7 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { User } from '../../@types/User';
 
-export async function getUserById(baseUrl: string, id: number): Promise<User> {
+const baseUrl = 'http://localhost:3000';
+
+export async function getUserById(id: number): Promise<User> {
     try {
         const response: AxiosResponse<User> = await axios.get(`${baseUrl}/users/${id}`)
         return response.data
