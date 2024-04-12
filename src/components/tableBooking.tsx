@@ -7,11 +7,7 @@ import { Booking } from '../@types/Booking';
 import { getRoomById } from '../services/room/getRoomById';
 import { getUserById } from '../services/users/getUserbyId';
 
-interface TableBookingProps {
-    onEditClick: () => void;
-}
-
-export function TableBooking({ onEditClick }: TableBookingProps) {
+export function TableBooking() {
     const tableMinWidth = '80rem';
     const [bookings, setBookings] = useState<Booking[] | null>(null);
     
@@ -60,7 +56,7 @@ export function TableBooking({ onEditClick }: TableBookingProps) {
                         <Td align='center'>{booking.clientName}</Td>
                         <Td align='center'>{booking.clientContact}</Td>
                         <Td align='center'>
-                            <ActionsBooking onEditClick={onEditClick} formType="booking" />
+                            <ActionsBooking />
                         </Td>
                     </Tr>
                     ))}

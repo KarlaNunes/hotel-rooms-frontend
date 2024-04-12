@@ -69,7 +69,7 @@ export function App() {
               />
 
             ) : (
-              <TableBooking onEditClick={handleEditForm} />
+              <TableBooking />
             )}
           </Box>
         </Flex>
